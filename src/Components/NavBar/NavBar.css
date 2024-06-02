@@ -1,0 +1,177 @@
+
+  /* General styling for the entire page */
+  body {
+    margin: 0;
+  }
+  
+  body {
+    padding-top: 120px; /* Adjust the value based on your navbar height */
+  }
+  
+  /* Styles for the navigation bar */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    padding: 10px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    background-color: var(--Background-Color);
+    border-bottom: 1px solid var(--Text-Color);
+  }
+  
+  /* Styles for the navigation bar */
+  .nav {
+    position: fixed;
+    z-index: 1001;
+    top: 0;
+    width: 100%;
+  }
+
+  .logo img {
+    max-width: 100px;
+    width: 100%;
+  }
+
+  /* Styles for the menu toggle button */
+  .menu-toggle {
+    cursor: pointer;
+  }
+  
+  /* Styles for the navigation icon */
+  .homeBox {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: 0.3s ease;
+    padding: 2.4em;
+    color: var(--Text-Color);
+  }
+  
+  /* Styles for the lines in the navigation icon */
+  .lineTop,
+  .lineBottom {
+    margin: 0 auto;
+    position: absolute;
+    display: block;
+    width: 24px;
+    height: 2px;
+    border-radius: 10px;
+    background: var(--Text-Color);
+    left: 0;
+    right: 0;
+    transform: rotate(0deg);
+    transition: all 0.4s;
+  }
+  
+  /* More specific styles for the lines */
+  .lineTop {
+    top: 2.2em;
+  }
+  
+  .lineBottom {
+    bottom: 2.1em;
+    height: 2px;
+  }
+  
+  /* Styles for the lines when the navigation icon is clicked */
+  .lineTop.spin {
+    top: 2.35em;
+    transform: rotate(135deg);
+    background: var(--Text-Color);
+  }
+  
+  .lineBottom.spin {
+    bottom: 2.35em;
+    transform: rotate(225deg);
+    background: var(--Text-Color);
+  }
+  /* Styles for the navigation overlay */
+  .nav-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    background-color: var(--Background-Color);
+    z-index: -2;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    padding: 4em;
+    transition: all 2s cubic-bezier(0.16, 1, 0.3, 1);
+    margin-top: 50px;
+  }
+  
+  /* Styles for the navigation links */
+  ul.nav-links {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center; /* Align text in the center */
+  }
+  
+  /* Styles for individual navigation links */
+  ul.nav-links li {
+    list-style: none;
+    position: relative;
+    margin-top: 15px; /* Adjust margin for spacing */
+  }
+  
+  ul.nav-links li a {
+    text-decoration: none;
+    color: var(--Text-Color);
+    font-family: var(--Extra-Font);
+    font-size: clamp(2.2rem, 5vw, 5rem);
+    position: relative;
+    top: 0;
+    transition: all 2s cubic-bezier(0.16, 1, 0.2, 1);
+    cursor: pointer;
+    white-space: nowrap; /* Prevent line breaks */
+  }
+  
+  /* Styles for the overlay behind the navigation links */
+  .nav-item-wrapper:after {
+    content: "";
+    position: absolute;
+    top: 120px;
+    left: -10%;
+    width: 120%;
+    height: 100%;
+    background: var(--Background-Color);
+    margin: 0 auto;
+  }
+  
+  
+  /* Media queries for smaller screens */
+  @media (max-width: 750px) {
+    
+
+      .logo .logo-img img {
+        width: 50px;
+        height: 50px;
+        margin-left: 15px;
+        vertical-align: middle;
+      }
+    }
+    
+
+    @media (max-width: 500px) {
+      .navbar {
+        padding: 0 10px;
+      }
+    }

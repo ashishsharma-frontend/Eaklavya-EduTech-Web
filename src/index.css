@@ -1,0 +1,91 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inconsolata:wght@200..900&family=Ubuntu+Condensed&display=swap");
+
+:root {
+  --Text-Font: "Inconsolata", monospace;
+  --Heading-Font: "Ubuntu Condensed", sans-serif;
+  --Extra-Font: "Bebas Neue", sans-serif;
+  --Sign-Font: "Signature";
+  --Background-Color: #f2f8fc;
+  --Text-Color: #161110;
+  --Orange-Color: #FFBF78;
+  --Green-Color: #7bf1a8;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  letter-spacing: 1px;
+}
+
+body {
+  background-color: var(--Background-Color);
+  color: var(--Text-Color);
+  text-wrap: balance;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--Heading-Font), sans-serif;
+}
+
+p,
+span {
+  font-family: var(--SubHeading-Font), monospace;
+}
+
+/* Signature Font */
+@font-face {
+  font-family: "Signature";
+  src: url("./Components/Autography-DOLnW.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+button {
+  padding: 15px; 
+  cursor: url(./assets/Hand.svg), pointer;
+}
+
+.project-card .project-heading,
+.footer,
+.footer-bottom{
+  margin-top: 0.50rem;
+  border-top: 1px solid black;
+  border-width: 0 10% 0 10%;
+  border-image: linear-gradient(to right, transparent, black, transparent) 1 1;
+}
+
+.project-card-header {
+  margin-top: 1rem;
+}
+
+.tab-section  {
+  width: 100%;
+  margin-top: 1.5rem;
+  border-bottom: 1px solid black;
+  border-width: 0 10% 0 10%;
+  border-image: linear-gradient(to right, transparent, black, transparent) 1 1;
+}
+
+button {
+  padding: 20px 40px;
+  border: 1px solid black;
+  background: linear-gradient(to right, #f9fbfc 50%, #FFBF78 50%);
+  background-size: 200% 100%;
+  background-position: bottom right;
+  transition: all 0.7s ease-out;
+  cursor: pointer;
+  /* margin-top: 2.5rem; */
+  color: var(--Background-Color);
+}
+
+button:hover {
+  border: 2px solid var(--Orange-Color);
+  background-position: bottom left;
+  color: var(--Text-Color);
+}

@@ -1,0 +1,142 @@
+.discover-page {
+  width: 100%;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.about-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  gap: 1.5rem;
+  padding: 20px;
+  border-radius: 8px;
+  align-items: center;
+  border: 1px solid var(--Green-Color);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  justify-content: center;
+}
+
+.about-section img {
+  max-width: 470px;
+  background-color: #e0fbe2;
+  border-radius: 8px;
+}
+
+.about-content {
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.cards-section {
+  display: flex;
+  justify-content: space-around;
+}
+
+.cards-section p {
+  font-size: 1.1rem;
+}
+
+.cards-section .card h3 {
+  margin-bottom: 0.3rem;
+}
+
+.team-cards {
+  max-width: 1350px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.team-card {
+  max-width: 400px;
+  padding: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: center;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  border: 1px solid var(--Green-Color);
+}
+
+.team-image {
+  width: 330px;
+  height: 350px;
+  overflow: hidden;
+}
+
+.team-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-position: center;
+  border-radius: 8px;
+}
+
+.team-card p {
+  font-family: var(--Sign-Font);
+  font-size: 2.2rem;
+  font: 500;
+}
+
+.team-card h4 {
+  font-family: var(--Extra-Font);
+  font-size: 1.2rem;
+}
+
+.project-section {
+  max-width: 1350px;
+  margin: 0 auto;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin-top: 2rem;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid var(--Green-Color);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;}
+
+.project-section img {
+  max-width: 550px;
+  width: 100%;
+}
+
+.course-overview {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.course-overview h2 {
+  font-family: var(--Extra-Font);
+  font-size: clamp(1.8rem, 6vw, 2.2rem);
+}
+
+.course-overview p {
+  font-size: 1rem;
+}
+
+@media (max-width: 1200px) {
+  .project-section {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 1000px) {
+  .about-section {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width : 400px) {
+  .team-image {
+    max-width: 100%;
+  }
+}
