@@ -32,7 +32,13 @@
 
 .cards-section {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
+}
+
+.cards-section .card {
+  padding: 10px;
+  text-align: center;
 }
 
 .cards-section p {
