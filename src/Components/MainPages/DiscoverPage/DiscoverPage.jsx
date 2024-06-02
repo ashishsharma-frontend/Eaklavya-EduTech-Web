@@ -77,7 +77,6 @@ function DiscoverPage() {
               <p>Happy Students</p>
             </div>
           </div>
-          <button className="portfolio-button">Portfolio</button>
         </div>
       </section>
       <section className="team-section">

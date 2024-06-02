@@ -105,7 +105,7 @@ const NavBar = () => {
             <li className="nav-item">
               {/* Link to Collection with transition */}
               <Link
-                to="/"
+                to="/contact"
                 onClick={() => setNavOpen(!navOpen)}
                 style={{
                   top: navOpen ? "0" : "120px",

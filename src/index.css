@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inconsolata:wght@200..900&family=Ubuntu+Condensed&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Edu+TAS+Beginner:wght@400..700&family=Inconsolata:wght@200..900&family=Ubuntu+Condensed&display=swap');
 :root {
   --Text-Font: "Inconsolata", monospace;
   --Heading-Font: "Ubuntu Condensed", sans-serif;
