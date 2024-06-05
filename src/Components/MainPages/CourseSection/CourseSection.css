@@ -25,19 +25,24 @@
 }
 
 /* Rotate spans */
-.tech-course-left h2 span:first-child {
-  transform: rotate(-5deg);
+.tech-course-left h2 span:nth-child(3) {
+  transform: rotate(5deg);
+  background-color: var(--Green-Color);
+  padding: 0 10px;
+  border-radius: 8px;
 }
 
-.tech-course-left h2 span:last-child {
-  transform: rotate(5deg);
+.tech-course-left h2 span:nth-child(7) {
+  transform: rotate(-5deg);
+  background-color: var(--Orange-Color);
+  padding: 0 10px;
+  border-radius: 8px;
 }
 
 /* Add gap between spans */
 .tech-course-left h2 span {
   display: inline-block;
   margin: 0 10px; /* Adjust gap as needed */
-  border: 1px solid var(--Text-Color);
 }
 
 .tech-course-right .tech-image {

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaCommentDots, FaShareAlt, FaUsers } from "react-icons/fa";
-import { GiCoffeeCup } from "react-icons/gi";
-import { GiPunchBlast } from "react-icons/gi";
+import { GiCoffeeCup, GiPunchBlast } from "react-icons/gi";
 import { MdOutlineBalance } from "react-icons/md";
-import "./ProjectPage.css";
 import Marquee from "react-fast-marquee";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import EcommerceImg from "../ProjectImages/EcommerceWeb.png";
 import TaskImg from "../ProjectImages/TaskImg.png";
 import MusicWeb from "../ProjectImages/MusicPlayerWeb.png";
@@ -13,9 +13,11 @@ import FitnessImg from "../ProjectImages/FitnessWeb.png";
 import ChatBotImg from "../ProjectImages/ChatBotImg.png";
 import SocialMediaImg from "../ProjectImages/SocialMediaImg.png";
 import CommunityBuilImg from "../ProjectImages/CommunityBuild.png";
+import "./ProjectPage.css";
 
-const ProjectCard = ({ title, level, description, icon, image }) => {
-  // Function to determine the icon based on the project level
+gsap.registerPlugin(ScrollTrigger);
+
+const ProjectCard = React.forwardRef(({ title, level, description, icon, image }, ref) => {
   const getIcon = () => {
     switch (level.toLowerCase()) {
       case "beginner":
@@ -30,33 +32,12 @@ const ProjectCard = ({ title, level, description, icon, image }) => {
   };
 
   return (
-    <div className="project-card">
-      {image && (
-        <img src={image} alt={`${title} Image`} className="project-image" />
-      )}
+    <div className="project-card" ref={ref}>
+      {image && <img src={image} alt={`${title} Image`} className="project-image" />}
       <div className="project-heading">
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-          className="project-card-header"
-        >
-          <h3
-            style={{
-              fontSize: "1.5rem",
-            }}
-          >
-            {title}
-          </h3>{" "}
-          <span
-            style={{
-              fontSize: "1.5rem",
-            }}
-          >
-            {getIcon()}
-          </span>{" "}
-          {/* Display the icon */}
+        <div className="project-card-header">
+          <h3>{title}</h3>
+          <span>{getIcon()}</span>
         </div>
       </div>
       <div className="project-card-body">
@@ -64,10 +45,12 @@ const ProjectCard = ({ title, level, description, icon, image }) => {
       </div>
     </div>
   );
-};
+});
 
 const ProjectPage = () => {
-  const [activeTab, setActiveTab] = useState("mern"); // State to track active tab
+  const [activeTab, setActiveTab] = useState("mern");
+  const cardsRefs = useRef([]);
+  cardsRefs.current = [];
 
   const frontendProjects = [
     {
@@ -134,141 +117,150 @@ const ProjectPage = () => {
     },
   ];
 
-  // Fullstack with Python projects
   const pythonProjects = [
     {
       title: "Python Fullstack Project 1",
       level: "Beginner",
-      description:
-        "Description for Python Fullstack Project 1.",
+      description: "Description for Python Fullstack Project 1.",
       image: EcommerceImg,
     },
     {
       title: "Python Fullstack Project 2",
       level: "Medium",
-      description:
-        "Description for Python Fullstack Project 2.",
+      description: "Description for Python Fullstack Project 2.",
       image: TaskImg,
     },
-    // Add more Python projects as needed
   ];
 
-  // UI/UX projects
   const uiuxProjects = [
     {
       title: "UI/UX Project 1",
       level: "Beginner",
-      description:
-        "Description for UI/UX Project 1.",
+      description: "Description for UI/UX Project 1.",
       image: PortfolioImg,
     },
     {
       title: "UI/UX Project 2",
       level: "Medium",
-      description:
-        "Description for UI/UX Project 2.",
+      description: "Description for UI/UX Project 2.",
       image: FitnessImg,
     },
-    // Add more UI/UX projects as needed
   ];
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const animateCards = () => {
+        cardsRefs.current.forEach((card, index) => {
+          gsap.from(card, {
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            ease: "power3.out",
+            delay: index * 0.3,
+            scrollTrigger: {
+              trigger: card,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          });
+        });
+      };
+
+      if (cardsRefs.current.length > 0) {
+        animateCards();
+      }
+    });
+
+    return () => {
+      ctx.revert();
+    };
+  }, [activeTab]);
+
+  const addToRefs = (el) => {
+    if (el && !cardsRefs.current.includes(el)) {
+      cardsRefs.current.push(el);
+    }
+  };
 
   return (
     <div className="project-page-section">
       <div className="tab-section">
-        <span onClick={() => setActiveTab("mern")} className={activeTab === "mern" ? "active-tab" : ""}>MERN</span>
-        <span onClick={() => setActiveTab("fullstack")} className={activeTab === "fullstack" ? "active-tab" : ""}>Fullstack with Python</span>
-        <span onClick={() => setActiveTab("uiux")} className={activeTab === "uiux" ? "active-tab" : ""}>UI/UX</span>
+        <span onClick={() => setActiveTab("mern")} className={activeTab === "mern" ? "active-tab" : ""}>
+          MERN
+        </span>
+        <span onClick={() => setActiveTab("fullstack")} className={activeTab === "fullstack" ? "active-tab" : ""}>
+          Fullstack with Python
+        </span>
+        <span onClick={() => setActiveTab("uiux")} className={activeTab === "uiux" ? "active-tab" : ""}>
+          UI/UX
+        </span>
       </div>
+
       {activeTab === "mern" && (
         <>
           <div className="marquee">
             <Marquee>
-              <span>
-                Frontend Challenges: Take Your Skills to the Next Level with These
-                Exciting Projects
-              </span>
-              <span>
-                Frontend Challenges: Take Your Skills to the Next Level with These
-                Exciting Projects
-              </span>
-              <span>
-                Frontend Challenges: Take Your Skills to the Next Level with These
-                Exciting Projects
-              </span>
+              <span>Frontend Challenges: Take Your Skills to the Next Level with These Exciting Projects</span>
+              <span>Frontend Challenges: Take Your Skills to the Next Level with These Exciting Projects</span>
+              <span>Frontend Challenges: Take Your Skills to the Next Level with These Exciting Projects</span>
             </Marquee>
           </div>
           <div className="project-page">
             {frontendProjects.map((project, index) => (
-              <ProjectCard key={index} {...project} />
+              <ProjectCard key={index} ref={addToRefs} {...project} />
             ))}
           </div>
           <div className="marquee">
             <Marquee>
-              <span>
-                MERN Challenges: Master the Full Stack with These Exciting Projects
-              </span>
-              <span>
-                MERN Challenges: Master the Full Stack with These Exciting Projects
-              </span>
-              <span>
-                MERN Challenges: Master the Full Stack with These Exciting Projects
-              </span>
+              <span>MERN Challenges: Master the Full Stack with These Exciting Projects</span>
+              <span>MERN Challenges: Master the Full Stack with These Exciting Projects</span>
+              <span>MERN Challenges: Master the Full Stack with These Exciting Projects</span>
             </Marquee>
           </div>
           <div className="project-page">
             {fullstackProjects.map((project, index) => (
-              <ProjectCard key={index} {...project} />
+              <ProjectCard key={index} ref={addToRefs} {...project} />
             ))}
           </div>
         </>
       )}
+
       {activeTab === "fullstack" && (
         <>
           <div className="marquee">
             <Marquee>
-              <span>
-                Fullstack with Python Projects: Explore the World of Fullstack Development with Python
-              </span>
-              <span>
-                Fullstack with Python Projects: Explore the World of Fullstack Development with Python
-              </span>
-              <span>
-                Fullstack with Python Projects: Explore the World of Fullstack Development with Python
-              </span>
+              <span>Fullstack with Python Projects: Explore the World of Fullstack Development with Python</span>
+              <span>Fullstack with Python Projects: Explore the World of Fullstack Development with Python</span>
+              <span>Fullstack with Python Projects: Explore the World of Fullstack Development with Python</span>
             </Marquee>
           </div>
           <div className="project-page">
             {pythonProjects.map((project, index) => (
-              <ProjectCard key={index} {...project} />
+              <ProjectCard key={index} ref={addToRefs} {...project} />
             ))}
           </div>
         </>
       )}
+
       {activeTab === "uiux" && (
         <>
           <div className="marquee">
             <Marquee>
-              <span>
-                UI/UX Projects: Enhance User Experience and Design Skills with These Exciting Projects
-              </span>
-              <span>
-                UI/UX Projects: Enhance User Experience and Design Skills with These Exciting Projects
-              </span>
-              <span>
-                UI/UX Projects: Enhance User Experience and Design Skills with These Exciting Projects
-              </span>
-            </Marquee>
-          </div>
-          <div className="project-page">
-            {uiuxProjects.map((project, index) => (
-              <ProjectCard key={index} {...project} />
-            ))}
-          </div>
-        </>
-      )}
-    </div>
-  );
+              <span>UI/UX Projects: Enhance User Experience and Design Skills with These Exciting Projects</span>
+              <span>UI/UX Projects: Enhance User Experience and Design Skills with These Exciting Projects</span>
+              <span>UI/UX Projects: Enhance User Experience and Design Skills with These Exciting Projects</span>
+              </Marquee>
+        </div>
+        <div className="project-page">
+          {uiuxProjects.map((project, index) => (
+            <ProjectCard key={index} ref={addToRefs} {...project} />
+          ))}
+        </div>
+      </>
+    )}
+
+  </div>
+);
 };
 
 export default ProjectPage;
-

@@ -94,10 +94,25 @@ const NavBar = () => {
                 onClick={() => setNavOpen(!navOpen)}
                 style={{
                   top: navOpen ? "0" : "120px",
-                  transitionDelay: navOpen ? "1s" : "0s",
+                  transitionDelay: navOpen ? "1.3s" : "0s",
                 }}
               >
                 Our Courses
+              </Link>
+              <div className="nav-item-wrapper"></div>
+            </li>
+
+            <li className="nav-item">
+              {/* Link to Collection with transition */}
+              <Link
+                to="/resources"
+                onClick={() => setNavOpen(!navOpen)}
+                style={{
+                  top: navOpen ? "0" : "120px",
+                  transitionDelay: navOpen ? "1.5s" : "0s",
+                }}
+              >
+               Our Resources 
               </Link>
               <div className="nav-item-wrapper"></div>
             </li>
@@ -109,7 +124,7 @@ const NavBar = () => {
                 onClick={() => setNavOpen(!navOpen)}
                 style={{
                   top: navOpen ? "0" : "120px",
-                  transitionDelay: navOpen ? "1.3s" : "0s",
+                  transitionDelay: navOpen ? "1.7s" : "0s",
                 }}
               >
                 Contact Me

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   FaCalendarAlt,
   FaCheck,
@@ -18,11 +18,23 @@ import UiUxImg from "../ProjectImages/UIUX.png";
 import GroupAvtar from "../ProjectImages/GroupAvtar.svg";
 import "./CourseSection.css";
 import Marquee from "react-fast-marquee";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 function CourseSection() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("all");
   const [isDropdownVisible, setDropdownVisible] = useState(false);
+
+  const mainHeadingRef = useRef(null);
+  const techCourseLeftRef = useRef(null);
+  const techCourseRightRef = useRef(null);
+  const searchBarRef = useRef(null);
+  const filterDropdownRef = useRef(null);
+  const techCourseCardsRef = useRef([]);
+  const techCourseStepRef = useRef(null);
 
   const courses = [
     {
@@ -64,6 +76,120 @@ function CourseSection() {
     },
   ];
 
+  useEffect(() => {
+    let ctx = gsap.context(() => {
+      const tl = gsap.timeline();
+
+      // Split text manually for animation
+      const headingWords = Array.from(
+        techCourseLeftRef.current.querySelectorAll(".animated-word")
+      );
+
+      tl.from(mainHeadingRef.current, {
+        opacity: 0,
+        y: 50,
+        duration: 1.5,
+        ease: "power3.out",
+      })
+        .from(
+          headingWords,
+          {
+            opacity: 0,
+            y: 50,
+            duration: 0.8,
+            ease: "power3.out",
+            stagger: 0.2,
+          },
+          "-=1.2"
+        )
+        .from(
+          techCourseLeftRef.current.querySelector("img"),
+          {
+            opacity: 0,
+            scale: 0.8,
+            duration: 1.5,
+            ease: "elastic.out(1, 0.3)",
+          },
+          "-=1.5"
+        )
+        .from(
+          techCourseRightRef.current,
+          {
+            opacity: 0,
+            x: 50,
+            duration: 1.5,
+            ease: "power3.out",
+          },
+          "-=1.2"
+        )
+        .from(
+          searchBarRef.current,
+          {
+            opacity: 0,
+            y: 20,
+            duration: 1,
+            ease: "power3.out",
+          },
+          "-=1"
+        )
+        .from(
+          filterDropdownRef.current,
+          {
+            opacity: 0,
+            y: 20,
+            duration: 1,
+            ease: "power3.out",
+          },
+          "-=0.7"
+        );
+
+      techCourseCardsRef.current.forEach((card, index) => {
+        gsap.from(card, {
+          opacity: 0,
+          y: 50,
+          duration: 1,
+          ease: "power3.out",
+          delay: index * 0.3,
+          scrollTrigger: {
+            trigger: card,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        });
+      });
+
+      gsap.from(techCourseStepRef.current, {
+        opacity: 0,
+        y: 50,
+        duration: 1.5,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: techCourseStepRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      gsap.fromTo(
+        techCourseStepRef.current.querySelectorAll(".step"),
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+          stagger: 0.3,
+          scrollTrigger: {
+            trigger: techCourseStepRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
+    }, []);
+    return () => ctx.revert();
+  }, []);
+
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -81,35 +207,25 @@ function CourseSection() {
     return matchesSearchTerm && matchesFilter;
   });
 
+  const splitTextIntoWords = (text) => {
+    return text.split(" ").map((word, index) => (
+      <span key={index} className="animated-word">
+        {word}
+      </span>
+    ));
+  };
+
+
+  
   return (
     <div className="tech-course-section">
-      <div className="main-heading">
+      <div className="main-heading" ref={mainHeadingRef}>
         <h2>Discover Our Tech Courses</h2>
       </div>
       <div className="tech-course-top">
-        <div className="tech-course-left">
+        <div className="tech-course-left" ref={techCourseLeftRef}>
           <h2>
-            Learn To{" "}
-            <span
-              style={{
-                backgroundColor: "#FFDB5C",
-                padding: "0 10px",
-                borderRadius: "8px",
-              }}
-            >
-              Code
-            </span>{" "}
-            Your , Dream And{" "}
-            <span
-              style={{
-                backgroundColor: "#C3FF93",
-                padding: "0 10px",
-                borderRadius: "8px",
-              }}
-            >
-              Design
-            </span>{" "}
-            Your Future.
+            {splitTextIntoWords("Learn To Code Your Dream And Design Your Future.")}
           </h2>
 
           <img
@@ -121,7 +237,7 @@ function CourseSection() {
             alt=""
           />
         </div>
-        <div className="tech-course-right">
+        <div className="tech-course-right" ref={techCourseRightRef}>
           <div className="tech-image">
             <img src={CourseMainImg} alt="Main Course" />
           </div>
@@ -143,7 +259,7 @@ function CourseSection() {
         </Marquee>
       </div>
       <div className="search-filter-section">
-        <div className="search-bar">
+        <div className="search-bar" ref={searchBarRef}>
           <FaSearch />
           <input
             type="text"
@@ -152,7 +268,7 @@ function CourseSection() {
             onChange={handleSearch}
           />
         </div>
-        <div className="filter-dropdown">
+        <div className="filter-dropdown" ref={filterDropdownRef}>
           <div className="filter-dropdown-button">
             <span onClick={() => setDropdownVisible(!isDropdownVisible)}>
               <FaFilter />
@@ -176,7 +292,11 @@ function CourseSection() {
       </div>
       <div className="tech-course-cards">
         {filteredCourses.map((course, index) => (
-          <div className="tech-course-card" key={index}>
+          <div
+            className="tech-course-card"
+            key={index}
+            ref={(el) => (techCourseCardsRef.current[index] = el)}
+          >
             <img src={course.img} alt={course.name} className="course-image" />
             <div className="course-details">
               <h3 style={{ fontSize: "1.5rem" }}>{course.name}</h3>
@@ -255,7 +375,7 @@ function CourseSection() {
         ))}
       </div>
 
-      <div className="tech-course-step">
+      <div className="tech-course-step" ref={techCourseStepRef}>
         <img src={CodingImg} alt="" style={{ maxWidth: "200px" }} />
         <h2 style={{ marginBottom: "1.5rem" }}>
           Kickstart Your Coding Expedition with Ekalavya

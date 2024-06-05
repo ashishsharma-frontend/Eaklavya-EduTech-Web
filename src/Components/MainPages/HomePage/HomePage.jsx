@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./HomePage.css";
+import gsap from "gsap";
+import { useLayoutEffect } from "react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Importing icons
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import backgroundVideo from "../ProjectImages/Home.mp4";
 import TopMainImg from "../ProjectImages/TopMain.svg";
 import MERNImg from "../ProjectImages/MERN.jpg";
@@ -12,14 +15,149 @@ import ManOne from "../ProjectImages/01.svg";
 import ManTwo from "../ProjectImages/02.svg";
 import ManThree from "../ProjectImages/03.svg";
 
+gsap.registerPlugin(ScrollTrigger);
+
 function HomePage() {
+  const comp = useRef(null);
+  const maintext = useRef(null);
+  const mainimgRef = useRef(null);
+  const homeimgRef = useRef(null);
+  const coursesRef = useRef(null);
+  const testimonialTextRef = useRef(null);
+  const testimonialCardRef = useRef(null);
+
+  useLayoutEffect(() => {
+    let ctx = gsap.context(() => {
+      // Timeline for home text and image animation
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: maintext.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      tl.from(maintext.current, {
+        duration: 1,
+        opacity: 0,
+        y: -50,
+        ease: "power3.out",
+      })
+        .from(
+          maintext.current.querySelector("h1"),
+          {
+            duration: 0.8,
+            opacity: 0,
+            y: 20,
+            ease: "power3.out",
+          },
+          "-=0.5"
+        )
+        .from(
+          maintext.current.querySelector("p"),
+          {
+            duration: 0.8,
+            opacity: 0,
+            y: 20,
+            ease: "power3.out",
+          },
+          "-=0.4"
+        )
+        .from(
+          maintext.current.querySelector("button"),
+          {
+            duration: 0.8,
+            opacity: 1,
+            y: 20,
+            ease: "power3.out",
+          },
+          "-=0.3"
+        );
+
+      // Main image bubble zoom animation
+      gsap.from(homeimgRef.current, {
+        duration: 1.5,
+        opacity: 0,
+        scale: 0.8,
+        ease: "elastic.out(1, 0.3)",
+        scrollTrigger: {
+          trigger: homeimgRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      
+
+      // Course cards animation
+      const courseElements = document.querySelectorAll(".course-card");
+      courseElements.forEach((course) => {
+        gsap.from(course, {
+          opacity: 0,
+          y: 50,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: course,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        });
+      });
+
+      // Testimonial text animation
+      gsap.from(testimonialTextRef.current, {
+        duration: 1,
+        opacity: 0,
+        y: 50,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: testimonialTextRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      // Testimonial card animation
+      gsap.from(testimonialCardRef.current, {
+        duration: 1,
+        opacity: 0,
+        x: -50,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: testimonialCardRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
+    }, comp);
+
+    gsap.fromTo(
+      mainimgRef.current,
+      { scale: 0.8, opacity: 0 },
+      {
+        duration: 1.5,
+        scale: 1,
+        opacity: 1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: mainimgRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      }
+    );    
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <div className="introduction-container">
+    <div className="introduction-container" ref={comp}>
       <div className="home-content">
         <div className="home-text">
-          <div className="home-main-text">
+          <div className="home-main-text" ref={maintext}>
             <h1>Welcome to Eaklavya Tech In India</h1>
-            <p style={{ maxWidth: "850px", marginBottom: "1.5rem" }}>
+            <p style={{ maxWidth: "850px", marginBottom: "-1rem" }}>
               Discover your potential with our extensive range of coding and
               design courses. Gain practical skills from industry leaders,
               engage in interactive projects, and become a part of a thriving
@@ -31,9 +169,9 @@ function HomePage() {
               <button className="cta-button">Explore Courses</button>
             </Link>{" "}
           </div>
-          <img src={TopMainImg} alt="" />
+          <img src={TopMainImg} alt="Top Main" ref={mainimgRef} />
         </div>
-        <div className="video">
+        <div className="video" ref={homeimgRef}>
           <video className="background-video" autoPlay loop muted>
             <source src={backgroundVideo} type="video/mp4" />
             Your browser does not support the video tag.
@@ -60,7 +198,7 @@ function HomePage() {
             future with EduTech India.
           </p>
         </div>
-        <div className="course-cards">
+        <div className="course-cards" ref={coursesRef}>
           <CourseCard
             image={MERNImg}
             title="MERN Stack Development"
@@ -93,7 +231,10 @@ function HomePage() {
       </div>
 
       <div className="testimonial-cards">
-        <TestimonialCarousel />
+        <TestimonialCarousel
+          textRef={testimonialTextRef}
+          cardRef={testimonialCardRef}
+        />
       </div>
     </div>
   );
@@ -119,54 +260,77 @@ function CourseCard({ image, title, description, link }) {
   );
 }
 
-function TestimonialCarousel() {
+function TestimonialCarousel({ textRef, cardRef }) {
   const testimonials = [
     {
       name: "Satvik Pandey",
-      image: ManOne, // Using imported image
+      image: ManOne,
       review:
         "The MERN stack course was incredibly comprehensive. The projects were practical and engaging, helping me to grasp complex concepts effortlessly.",
     },
     {
       name: "Kunal Sharma",
-      image: ManTwo, // Using imported image
+      image: ManTwo,
       review:
         "EduTech India's courses are top-notch! The Fullstack with Python Django course offered deep insights and hands-on experience that enhanced my skills significantly.",
     },
     {
       name: "Harshit Rathore",
-      image: ManThree, // Using imported image
+      image: ManThree,
       review:
         "A truly transformative experience! The UI/UX design course opened up new career opportunities for me, thanks to the exceptional teaching and comprehensive curriculum.",
     },
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const carouselRef = useRef(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) =>
-        prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
-      );
+      goToNext();
     }, 3000);
     return () => clearInterval(interval);
-  }, [testimonials.length]);
+  }, []);
 
   const goToNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
-    );
+    gsap.to(carouselRef.current, {
+      duration: 0.5,
+      opacity: 0,
+      x: -50,
+      onComplete: () => {
+        setCurrentIndex((prevIndex) =>
+          prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
+        );
+        gsap.fromTo(
+          carouselRef.current,
+          { x: 50 },
+          { duration: 0.5, opacity: 1, x: 0 }
+        );
+      },
+    });
   };
 
   const goToPrev = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1
-    );
+    gsap.to(carouselRef.current, {
+      duration: 0.5,
+      opacity: 0,
+      x: 50,
+      onComplete: () => {
+        setCurrentIndex((prevIndex) =>
+          prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1
+        );
+        gsap.fromTo(
+          carouselRef.current,
+          { x: -50 },
+          { duration: 0.5, opacity: 1, x: 0 }
+        );
+      },
+    });
   };
 
   return (
-    <div className="carousel-main-conatiner">
-      <div className="carousel-heading">
+    <div className="carousel-main-container">
+      <div className="carousel-heading" ref={textRef}>
         <h2
           style={{
             fontSize: "clamp(1.5rem, 5vw, 2.5rem)",
@@ -188,8 +352,8 @@ function TestimonialCarousel() {
       </div>
       <div className="carousel-container">
         <FaArrowLeft className="carousel-arrow left" onClick={goToPrev} />
-        <div className="carousel-cards">
-          <div className="carousel-card">
+        <div className="carousel-cards" ref={carouselRef}>
+          <div className="carousel-card" ref={cardRef}>
             <div className="carousel-content">
               <img
                 src={testimonials[currentIndex].image}

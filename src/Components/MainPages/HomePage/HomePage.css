@@ -133,7 +133,11 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
-.carousel-main-conatiner {
+.course-card  button {
+  width: 100%;
+}
+
+.carousel-main-container {
   max-width: 1350px;
   width: 100%;
   margin: 0 auto;
@@ -252,10 +256,12 @@
     padding: 10px;
   }
 
-  .carousel-main-conatiner {
+  .carousel-main-container {
     display: flex;
     flex-direction: column;
     text-align: start;
     padding: 10px;
   }
 }
+
+

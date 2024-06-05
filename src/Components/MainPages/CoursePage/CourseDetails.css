@@ -59,9 +59,8 @@
 }
 
 .course-details-tabs span.active {
-  background-color: var(--Green-Color);
+  background-color: #E0FBE2;
   border: 1px solid var(--Text-Color);
-  color: var(--Background-Color);
 }
 
 .course-tab-content {
@@ -125,7 +124,7 @@
   gap: 1rem;
   padding: 20px;
   border-radius: 8px;
-  background-color: var(--Orange-Color);
+  background-color: #E0FBE2;
   border: 1px solid var(--Text-Color);
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
     rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;

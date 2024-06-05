@@ -1,18 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { FaStar, FaCalendarAlt, FaCheck } from "react-icons/fa";
+import { useParams } from "react-router-dom";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import "./CourseDetails.css";
+
 import MernImg from "../ProjectImages/MERN.jpg";
 import DjangoImg from "../ProjectImages/PY-DJ.jpg";
 import UiUxImg from "../ProjectImages/UIUX.png";
-import PiyushGargImg from "../ProjectImages/AvtarOne.jpg"; // Import instructor image
-import AnupamPandeyImg from "../ProjectImages/AvtarThree.jpg"; // Import instructor image
-import EmilyJohnsonImg from "../ProjectImages/AvtarTwo.jpg"; // Import instructor image
-import { useParams } from "react-router-dom";
-import "./CourseDetails.css";
+import PiyushGargImg from "../ProjectImages/AvtarOne.jpg";
+import AnupamPandeyImg from "../ProjectImages/AvtarThree.jpg";
+import EmilyJohnsonImg from "../ProjectImages/AvtarTwo.jpg";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const CourseDetails = () => {
   const [activeTab, setActiveTab] = useState("overview");
-
   const { courseId } = useParams();
+
   const courseData = {
     mern: {
       img: MernImg,
@@ -44,7 +49,7 @@ const CourseDetails = () => {
         courses: 5,
         reviews:
           "Piyush has received excellent feedback for his ability to break down complex concepts and provide hands-on learning experiences. His teaching style is engaging and easy to follow, making learning enjoyable and effective.",
-        image: PiyushGargImg, // Add instructor image
+        image: PiyushGargImg,
       },
     },
     python: {
@@ -77,7 +82,7 @@ const CourseDetails = () => {
         courses: 3,
         reviews:
           "Anupam's students appreciate his in-depth knowledge and his practical approach to teaching. His clear explanations and detailed examples make learning Django a smooth and enjoyable process.",
-        image: AnupamPandeyImg, // Add instructor image
+        image: AnupamPandeyImg,
       },
     },
     uiux: {
@@ -110,33 +115,124 @@ const CourseDetails = () => {
         courses: 4,
         reviews:
           "Emily's courses are highly rated for her clear explanations and practical approach to UI/UX design. Students appreciate her ability to make complex concepts simple and accessible, and her commitment to student success.",
-        image: EmilyJohnsonImg, // Add instructor image
+        image: EmilyJohnsonImg,
       },
     },
   };
+
   const course = courseData[courseId];
+
+  const headerRef = useRef(null);
+  const imageRef = useRef(null);
+  const descriptionRef = useRef(null);
+  const syllabusRef = useRef(null);
+  const instructorRef = useRef(null);
+
+  useEffect(() => {
+    let ctx = gsap.context(() => {
+      const tl = gsap.timeline();
+
+      // Animate Header
+      tl.from(headerRef.current, {
+        duration: 1,
+        opacity: 0,
+        y: 50,
+        ease: "power3.out",
+      }).from(
+        imageRef.current,
+        {
+          duration: 1.5,
+          opacity: 0,
+          scale: 0.8,
+          ease: "elastic.out(1, 0.3)",
+        },
+        "-=1"
+      );
+
+      // Animate Tab Content
+      if (activeTab === "overview") {
+        gsap.from(descriptionRef.current.querySelectorAll("h2, p, ul, li"), {
+          duration: 1,
+          opacity: 0,
+          y: 50,
+          ease: "power3.out",
+          stagger: 0.2,
+          scrollTrigger: {
+            trigger: descriptionRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        });
+      } else if (activeTab === "syllabus") {
+        gsap.from(syllabusRef.current.children, {
+          duration: 1,
+          opacity: 0,
+          y: 50,
+          ease: "power3.out",
+          stagger: 0.2,
+          scrollTrigger: {
+            trigger: syllabusRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        });
+      } else if (activeTab === "instructor") {
+        gsap.from(instructorRef.current, {
+          duration: 1,
+          opacity: 0,
+          y: 50,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: instructorRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        });
+
+        gsap.from(instructorRef.current.querySelector(".instructor-image"), {
+          duration: 1.5,
+          opacity: 0,
+          scale: 0.8,
+          ease: "elastic.inOut(1, 0.3)",
+          scrollTrigger: {
+            trigger: instructorRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        });
+
+        gsap.from(instructorRef.current.querySelectorAll("img, p, span"), {
+          duration: 1,
+          opacity: 0,
+          y: 50,
+          ease: "power3.out",
+          stagger: 0.2,
+          scrollTrigger: {
+            trigger: instructorRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        });
+      }
+    }, [activeTab]);
+
+    return () => ctx.revert();
+  }, [activeTab]);
 
   return (
     <div className="course-details-container">
       {course && (
         <div className="course-details-main">
-          <div className="course-details-header">
+          <div className="course-details-header" ref={headerRef}>
             <div className="course-details-top">
               {course.title && <h2>{course.title}</h2>}
-              <div style={{
-                display: "flex",
-                gap: "1rem",
-                fontSize: "1.2rem",
-                alignItems: "center"
-              }} className="course-rating">
+              <div className="course-rating">
                 <span>{course.rating}</span>
-                <FaStar className="filled-star" style={{
-                  color: "#FC6736"
-                }} />
+                <FaStar className="filled-star" />
               </div>
             </div>
             <div className="course-details-bottom">
-              <div className="course-details-image">
+              <div className="course-details-image" ref={imageRef}>
                 {course.img && <img src={course.img} alt={course.title} />}
               </div>
             </div>
@@ -162,7 +258,7 @@ const CourseDetails = () => {
             </span>
           </div>
           {course && activeTab === "overview" && (
-            <div className="course-tab-content">
+            <div className="course-tab-content" ref={descriptionRef}>
               <h2>Description</h2>
               <div className="para">
                 <p>Welcome to the Ultimate {course.title} course.</p>
@@ -179,59 +275,27 @@ const CourseDetails = () => {
               </ul>
             </div>
           )}
-
           {course && activeTab === "syllabus" && (
-            <div
-              style={{
-                marginTop: "-1rem",
-              }}
-              className="course-tab-content"
-            >
-              <h3 style={{
-                fontSize : "2rem",
-                margin : "-1rem 0"
-              }}>Our Syllabus</h3>
+            <div className="course-tab-content" ref={syllabusRef}>
+              <h3>Our Syllabus</h3>
               {Object.keys(course.syllabus).map((section, index) => (
                 <div className="syllabus" key={index}>
-                  <h4
-                    style={{
-                      fontSize: "1.3rem",
-                    }}
-                  >
-                    {section.replace(/([a-z])([A-Z])/g, "$1 $2")}
-                  </h4>
-                  <p
-                    style={{
-                      marginTop: "1rem",
-                    }}
-                  >
-                    {course.syllabus[section]}
-                  </p>
+                  <h4>{section.replace(/([a-z])([A-Z])/g, "$1 $2")}</h4>
+                  <p>{course.syllabus[section]}</p>
                 </div>
               ))}
             </div>
           )}
-
           {course && activeTab === "instructor" && (
-            <div className="course-tab-content">
-              <h3 style={{
-                fontSize : "2rem",
-                marginTop : "-1.5rem"
-              }}>Meet Our Instructor</h3>
+            <div className="course-tab-content" ref={instructorRef}>
+              <h3>Meet Our Instructor</h3>
               <div className="instructor-details">
                 <img
                   src={course.instructor.image}
                   alt={course.instructor.name}
                   className="instructor-image"
                 />
-                <p
-                  style={{
-                    fontFamily: "var(--Extra-Font)",
-                    fontSize: "1.3rem",
-                  }}
-                >
-                  <strong>{course.instructor.name}</strong>
-                </p>
+                <p><strong>{course.instructor.name}</strong></p>
                 <p>{course.instructor.profile}</p>
                 <div className="instructor-span">
                   <span>
