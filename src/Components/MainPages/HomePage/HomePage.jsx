@@ -95,7 +95,7 @@ function HomePage() {
         gsap.from(course, {
           opacity: 0,
           y: 50,
-          duration: 1,
+          duration: 1.5,
           ease: "power3.out",
           scrollTrigger: {
             trigger: course,
