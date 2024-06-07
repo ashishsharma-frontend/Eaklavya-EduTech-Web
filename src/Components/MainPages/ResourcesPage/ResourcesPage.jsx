@@ -41,8 +41,10 @@ function ResourcesPage() {
   const mainImageRef = useRef(null);
   const benefitsImageRef = useRef(null);
   const benefitsRef = useRef([]);
+  const resourceCardsRef = useRef([]);
 
   benefitsRef.current = [];
+  resourceCardsRef.current = [];
 
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
@@ -100,14 +102,30 @@ function ResourcesPage() {
           },
         });
       });
+
+      // Resource cards animation
+      resourceCardsRef.current.forEach((card, index) => {
+        gsap.from(card, {
+          duration: 1,
+          opacity: 0,
+          y: 50,
+          ease: "power3.out",
+          delay: index * 0.2,
+          scrollTrigger: {
+            trigger: card,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
+        });
+      });
     }, comp);
 
     return () => ctx.revert();
   }, []);
 
-  const addToRefs = (el) => {
-    if (el && !benefitsRef.current.includes(el)) {
-      benefitsRef.current.push(el);
+  const addToRefs = (el, refArray) => {
+    if (el && !refArray.current.includes(el)) {
+      refArray.current.push(el);
     }
   };
 
@@ -327,7 +345,7 @@ function ResourcesPage() {
           <div className="benefits-container">
             <div className="benefits-column-one">
               {benefits.slice(0, 3).map((benefit, index) => (
-                <div key={index} className="benefit-item" ref={addToRefs}>
+                <div key={index} className="benefit-item" ref={(el) => addToRefs(el, benefitsRef)}>
                   <div className="icon">{benefit.icon}</div>
                   <h3>{benefit.title}</h3>
                   <p>{benefit.description}</p>
@@ -343,7 +361,7 @@ function ResourcesPage() {
             </div>
             <div className="benefits-column-two">
               {benefits.slice(3, 6).map((benefit, index) => (
-                <div key={index} className="benefit-item" ref={addToRefs}>
+                <div key={index} className="benefit-item" ref={(el) => addToRefs(el, benefitsRef)}>
                   <div className="icon">{benefit.icon}</div>
                   <h3>{benefit.title}</h3>
                   <p>{benefit.description}</p>
@@ -381,18 +399,22 @@ function ResourcesPage() {
             <div className="resource-category">
               <div className="resource-cards">
                 {category.resources.map((resource, resourceIndex) => (
-                  <div key={resourceIndex} className="resource-card">
-         <div className="resource-icon">
-  <p>{resource.icon}</p>{" "}
-  <a
-    href={resource.link}
-    target="_blank"
-    rel="noopener noreferrer"
-    data-content="Click"
-  >
-    Connect
-  </a>
-</div>
+                  <div
+                    key={resourceIndex}
+                    className="resource-card"
+                    ref={(el) => addToRefs(el, resourceCardsRef)}
+                  >
+                    <div className="resource-icon">
+                      <p>{resource.icon}</p>{" "}
+                      <a
+                        href={resource.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-content="Click"
+                      >
+                        Connect
+                      </a>
+                    </div>
 
                     <div className="resource-description">
                       <div className="resource-name">
