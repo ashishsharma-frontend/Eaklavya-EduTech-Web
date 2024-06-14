@@ -17,35 +17,51 @@ import "./ProjectPage.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const ProjectCard = React.forwardRef(({ title, level, description, icon, image }, ref) => {
-  const getIcon = () => {
-    switch (level.toLowerCase()) {
-      case "beginner":
-        return <GiCoffeeCup />;
-      case "medium":
-        return <MdOutlineBalance />;
-      case "advanced":
-        return <GiPunchBlast />;
-      default:
-        return null;
-    }
-  };
+const ProjectCard = React.forwardRef(
+  ({ title, level, description, icon, image }, ref) => {
+    const getIcon = () => {
+      switch (level.toLowerCase()) {
+        case "beginner":
+          return <GiCoffeeCup />;
+        case "medium":
+          return <MdOutlineBalance />;
+        case "advanced":
+          return <GiPunchBlast />;
+        default:
+          return null;
+      }
+    };
 
-  return (
-    <div className="project-card" ref={ref}>
-      {image && <img src={image} alt={`${title} Image`} className="project-image" />}
-      <div className="project-heading">
-        <div className="project-card-header">
-          <h3>{title}</h3>
-          <span>{getIcon()}</span>
+    return (
+      <div className="project-card" ref={ref}>
+        {image && (
+          <img src={image} alt={`${title} Image`} className="project-image" />
+        )}
+        <div className="project-heading">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+            className="project-card-header"
+          >
+            <h3>{title}</h3>
+            <span
+              style={{
+                fontSize: "1.5rem",
+              }}
+            >
+              {getIcon()}
+            </span>
+          </div>
+        </div>
+        <div className="project-card-body">
+          <p>{description}</p>
         </div>
       </div>
-      <div className="project-card-body">
-        <p>{description}</p>
-      </div>
-    </div>
-  );
-});
+    );
+  }
+);
 
 const ProjectPage = () => {
   const [activeTab, setActiveTab] = useState("mern");
@@ -185,13 +201,22 @@ const ProjectPage = () => {
   return (
     <div className="project-page-section">
       <div className="tab-section">
-        <span onClick={() => setActiveTab("mern")} className={activeTab === "mern" ? "active-tab" : ""}>
+        <span
+          onClick={() => setActiveTab("mern")}
+          className={activeTab === "mern" ? "active-tab" : ""}
+        >
           MERN
         </span>
-        <span onClick={() => setActiveTab("fullstack")} className={activeTab === "fullstack" ? "active-tab" : ""}>
+        <span
+          onClick={() => setActiveTab("fullstack")}
+          className={activeTab === "fullstack" ? "active-tab" : ""}
+        >
           Fullstack with Python
         </span>
-        <span onClick={() => setActiveTab("uiux")} className={activeTab === "uiux" ? "active-tab" : ""}>
+        <span
+          onClick={() => setActiveTab("uiux")}
+          className={activeTab === "uiux" ? "active-tab" : ""}
+        >
           UI/UX
         </span>
       </div>
@@ -200,9 +225,18 @@ const ProjectPage = () => {
         <>
           <div className="marquee">
             <Marquee>
-              <span>Frontend Challenges: Take Your Skills to the Next Level with These Exciting Projects</span>
-              <span>Frontend Challenges: Take Your Skills to the Next Level with These Exciting Projects</span>
-              <span>Frontend Challenges: Take Your Skills to the Next Level with These Exciting Projects</span>
+              <span>
+                Frontend Challenges: Take Your Skills to the Next Level with
+                These Exciting Projects
+              </span>
+              <span>
+                Frontend Challenges: Take Your Skills to the Next Level with
+                These Exciting Projects
+              </span>
+              <span>
+                Frontend Challenges: Take Your Skills to the Next Level with
+                These Exciting Projects
+              </span>
             </Marquee>
           </div>
           <div className="project-page">
@@ -212,9 +246,18 @@ const ProjectPage = () => {
           </div>
           <div className="marquee">
             <Marquee>
-              <span>MERN Challenges: Master the Full Stack with These Exciting Projects</span>
-              <span>MERN Challenges: Master the Full Stack with These Exciting Projects</span>
-              <span>MERN Challenges: Master the Full Stack with These Exciting Projects</span>
+              <span>
+                MERN Challenges: Master the Full Stack with These Exciting
+                Projects
+              </span>
+              <span>
+                MERN Challenges: Master the Full Stack with These Exciting
+                Projects
+              </span>
+              <span>
+                MERN Challenges: Master the Full Stack with These Exciting
+                Projects
+              </span>
             </Marquee>
           </div>
           <div className="project-page">
@@ -229,9 +272,18 @@ const ProjectPage = () => {
         <>
           <div className="marquee">
             <Marquee>
-              <span>Fullstack with Python Projects: Explore the World of Fullstack Development with Python</span>
-              <span>Fullstack with Python Projects: Explore the World of Fullstack Development with Python</span>
-              <span>Fullstack with Python Projects: Explore the World of Fullstack Development with Python</span>
+              <span>
+                Fullstack with Python Projects: Explore the World of Fullstack
+                Development with Python
+              </span>
+              <span>
+                Fullstack with Python Projects: Explore the World of Fullstack
+                Development with Python
+              </span>
+              <span>
+                Fullstack with Python Projects: Explore the World of Fullstack
+                Development with Python
+              </span>
             </Marquee>
           </div>
           <div className="project-page">
@@ -246,21 +298,29 @@ const ProjectPage = () => {
         <>
           <div className="marquee">
             <Marquee>
-              <span>UI/UX Projects: Enhance User Experience and Design Skills with These Exciting Projects</span>
-              <span>UI/UX Projects: Enhance User Experience and Design Skills with These Exciting Projects</span>
-              <span>UI/UX Projects: Enhance User Experience and Design Skills with These Exciting Projects</span>
-              </Marquee>
-        </div>
-        <div className="project-page">
-          {uiuxProjects.map((project, index) => (
-            <ProjectCard key={index} ref={addToRefs} {...project} />
-          ))}
-        </div>
-      </>
-    )}
-
-  </div>
-);
+              <span>
+                UI/UX Projects: Enhance User Experience and Design Skills with
+                These Exciting Projects
+              </span>
+              <span>
+                UI/UX Projects: Enhance User Experience and Design Skills with
+                These Exciting Projects
+              </span>
+              <span>
+                UI/UX Projects: Enhance User Experience and Design Skills with
+                These Exciting Projects
+              </span>
+            </Marquee>
+          </div>
+          <div className="project-page">
+            {uiuxProjects.map((project, index) => (
+              <ProjectCard key={index} ref={addToRefs} {...project} />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
 };
 
 export default ProjectPage;
